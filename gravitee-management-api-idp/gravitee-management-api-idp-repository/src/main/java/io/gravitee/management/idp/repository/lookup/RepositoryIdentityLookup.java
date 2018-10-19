@@ -22,17 +22,12 @@ import io.gravitee.management.idp.repository.RepositoryIdentityProvider;
 import io.gravitee.management.idp.repository.lookup.spring.RepositoryIdentityLookupConfiguration;
 import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.UserRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -59,7 +54,7 @@ public class RepositoryIdentityLookup implements IdentityLookup {
     public io.gravitee.management.idp.api.identity.User retrieve(IdentityReference identityReference) {
         try {
             Optional<io.gravitee.repository.management.model.User> optUser =
-                    userRepository.findByUsername(identityReference.getReference());
+                    userRepository.findBySource(identityReference.getSource(), identityReference.getReference());
 
             if (optUser.isPresent()) {
                 return convert(optUser.get());
@@ -76,11 +71,17 @@ public class RepositoryIdentityLookup implements IdentityLookup {
     }
 
     @Override
+    public boolean searchable() {
+        return false;
+    }
+
+    @Override
     public Collection<User> search(String query) {
+        return Collections.emptySet();
+        /*
         try {
             return userRepository.search(null).getContent().stream().filter(user -> MANAGED_USER_TYPES.contains(user.getSource())).filter(
-                    user -> (user.getUsername() != null && StringUtils.containsIgnoreCase(user.getUsername(), query)) ||
-                            (user.getFirstname() != null && StringUtils.containsIgnoreCase(user.getFirstname(), query)) ||
+                    user -> (user.getFirstname() != null && StringUtils.containsIgnoreCase(user.getFirstname(), query)) ||
                             (user.getLastname() != null && StringUtils.containsIgnoreCase(user.getLastname(), query)) ||
                             (user.getEmail() != null && StringUtils.containsIgnoreCase(user.getEmail(), query))
             ).map(this::convert).collect(Collectors.toSet());
@@ -88,11 +89,11 @@ public class RepositoryIdentityLookup implements IdentityLookup {
             LOGGER.error("Unexpected error while searching for users in repository", te);
             return null;
         }
+        */
     }
 
     private User convert(io.gravitee.repository.management.model.User identity) {
         RepositoryUser user = new RepositoryUser(identity.getId());
-        user.setUsername(identity.getUsername());
         user.setEmail(identity.getEmail());
         user.setFirstname(identity.getFirstname());
         user.setLastname(identity.getLastname());

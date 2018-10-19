@@ -25,19 +25,16 @@ public class MembershipListItem {
 
     private final String displayName;
 
-    private final String username;
-
     private final String role;
 
     public MembershipListItem(MemberEntity member) {
         this.id = member.getId();
         this.role = member.getRole();
-        this.username = member.getUsername();
 
         if (member.getFirstname() != null && member.getLastname() != null) {
             this.displayName = member.getFirstname() + ' ' + member.getLastname();
         } else {
-            this.displayName = username;
+            this.displayName = member.getEmail();
         }
     }
 
@@ -51,9 +48,5 @@ public class MembershipListItem {
 
     public String getRole() {
         return role;
-    }
-
-    public String getUsername() {
-        return username;
     }
 }

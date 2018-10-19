@@ -25,7 +25,7 @@ import io.gravitee.management.idp.repository.RepositoryIdentityProvider;
 public class RepositoryUser implements User {
 
     private final String id;
-    private String firstname, lastname, email, username;
+    private String firstname, lastname, email;
 
     RepositoryUser(String id) {
         this.id = id;
@@ -43,15 +43,6 @@ public class RepositoryUser implements User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override

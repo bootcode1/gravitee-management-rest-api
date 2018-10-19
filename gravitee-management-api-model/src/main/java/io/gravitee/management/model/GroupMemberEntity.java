@@ -32,7 +32,7 @@ public class GroupMemberEntity {
         this.id = memberEntity.getId();
 
         if (memberEntity.getFirstname() == null || memberEntity.getLastname() == null) {
-            displayName = memberEntity.getUsername();
+            displayName = memberEntity.getEmail();
         } else {
             displayName = memberEntity.getFirstname() + ' ' + memberEntity.getLastname();
         }

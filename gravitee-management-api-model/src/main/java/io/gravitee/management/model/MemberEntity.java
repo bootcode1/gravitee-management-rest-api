@@ -29,8 +29,6 @@ public class MemberEntity {
 
     private String id;
 
-    private String username;
-
     private String firstname;
 
     private String lastname;
@@ -109,14 +107,6 @@ public class MemberEntity {
 
     public void setPermissions(Map<String, char[]> permissions) {
         this.permissions = permissions;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
